@@ -46,10 +46,10 @@ const Piece = React.memo(
       } = useChessboardProps();
       // gestureEnabledFromChessboardProps = false;
 
-      const gestureEnabled = useDerivedValue(
-        () => turn.value === id.charAt(0) && gestureEnabledFromChessboardProps,
-        [id, gestureEnabledFromChessboardProps]
-      );
+      // const gestureEnabled = useDerivedValue(
+      //   () => turn.value === id.charAt(0) && gestureEnabledFromChessboardProps,
+      //   [id, gestureEnabledFromChessboardProps]
+      // );
 
       const { toPosition, toTranslation } = useReversePiecePosition();
 
@@ -120,13 +120,13 @@ const Piece = React.memo(
         ]
       );
 
-      const movePiece = useCallback(
-        (to: Square) => {
-          const from = toPosition({ x: offsetX.value, y: offsetY.value });
-          moveTo(from, to);
-        },
-        [moveTo, offsetX.value, offsetY.value, toPosition]
-      );
+      // const movePiece = useCallback(
+      //   (to: Square) => {
+      //     const from = toPosition({ x: offsetX.value, y: offsetY.value });
+      //     moveTo(from, to);
+      //   },
+      //   [moveTo, offsetX.value, offsetY.value, toPosition]
+      // );
 
       useImperativeHandle(
         ref,
@@ -143,81 +143,81 @@ const Piece = React.memo(
         [moveTo, pieceEnabled, square]
       );
 
-      const onStartTap = useCallback(
-        // eslint-disable-next-line no-shadow
-        (square: Square) => {
-          'worklet';
-          if (!onSelectPiece) {
-            return;
-          }
-          runOnJS(onSelectPiece)(square);
-        },
-        [onSelectPiece]
-      );
+      // const onStartTap = useCallback(
+      //   // eslint-disable-next-line no-shadow
+      //   (square: Square) => {
+      //     'worklet';
+      //     if (!onSelectPiece) {
+      //       return;
+      //     }
+      //     runOnJS(onSelectPiece)(square);
+      //   },
+      //   [onSelectPiece]
+      // );
 
-      const globalMoveTo = useCallback(
-        (move: Move) => {
-          refs?.current?.[move.from].current.moveTo?.(move.to);
-        },
-        [refs]
-      );
+      // const globalMoveTo = useCallback(
+      //   (move: Move) => {
+      //     refs?.current?.[move.from].current.moveTo?.(move.to);
+      //   },
+      //   [refs]
+      // );
 
-      const handleOnBegin = useCallback(() => {
-        const currentSquare = toPosition({
-          x: translateX.value,
-          y: translateY.value,
-        });
+      // const handleOnBegin = useCallback(() => {
+      //   const currentSquare = toPosition({
+      //     x: translateX.value,
+      //     y: translateY.value,
+      //   });
 
-        const previousTappedSquare = selectedSquare.value;
-        const move =
-          previousTappedSquare &&
-          validateMove(previousTappedSquare, currentSquare);
+      //   const previousTappedSquare = selectedSquare.value;
+      //   const move =
+      //     previousTappedSquare &&
+      //     validateMove(previousTappedSquare, currentSquare);
 
-        if (move) {
-          runOnJS(globalMoveTo)(move);
-          return;
-        }
-        if (!gestureEnabled.value) return;
-        scale.value = withTiming(1.2);
-        // onStartTap(square);
-      }, [
-        gestureEnabled.value,
-        globalMoveTo,
-        onStartTap,
-        scale,
-        selectedSquare.value,
-        square,
-        toPosition,
-        translateX.value,
-        translateY.value,
-        validateMove,
-      ]);
+      //   if (move) {
+      //     runOnJS(globalMoveTo)(move);
+      //     return;
+      //   }
+      //   if (!gestureEnabled.value) return;
+      //   scale.value = withTiming(1.2);
+      //   // onStartTap(square);
+      // }, [
+      //   gestureEnabled.value,
+      //   globalMoveTo,
+      //   onStartTap,
+      //   scale,
+      //   selectedSquare.value,
+      //   square,
+      //   toPosition,
+      //   translateX.value,
+      //   translateY.value,
+      //   validateMove,
+      // ]);
 
-      const gesture = Gesture.Pan()
-        .enabled(!isPromoting && pieceEnabled.value)
-        .onBegin(() => {
-          offsetX.value = translateX.value;
-          offsetY.value = translateY.value;
-          runOnJS(handleOnBegin)();
-        })
-        .onStart(() => {
-          if (!gestureEnabled.value) return;
-          // isGestureActive.value = true;
-        })
-        .onUpdate(({ translationX, translationY }) => {
-          if (!gestureEnabled.value) return;
-          // translateX.value = offsetX.value + translationX;
-          // translateY.value = offsetY.value + translationY;
-        })
-        .onEnd(() => {
-          if (!gestureEnabled.value) return;
-          runOnJS(movePiece)(
-            toPosition({ x: translateX.value, y: translateY.value })
-          );
-        })
-        .onFinalize(() => {
-          scale.value = withTiming(1);
-        });
+      // const gesture = Gesture.Pan()
+      //   .enabled(!isPromoting && pieceEnabled.value)
+      //   .onBegin(() => {
+      //     offsetX.value = translateX.value;
+      //     offsetY.value = translateY.value;
+      //     runOnJS(handleOnBegin)();
+      //   })
+      //   .onStart(() => {
+      //     if (!gestureEnabled.value) return;
+      //     // isGestureActive.value = true;
+      //   })
+      //   .onUpdate(({ translationX, translationY }) => {
+      //     if (!gestureEnabled.value) return;
+      //     // translateX.value = offsetX.value + translationX;
+      //     // translateY.value = offsetY.value + translationY;
+      //   })
+      //   .onEnd(() => {
+      //     if (!gestureEnabled.value) return;
+      //     runOnJS(movePiece)(
+      //       toPosition({ x: translateX.value, y: translateY.value })
+      //     );
+      //   })
+      //   .onFinalize(() => {
+      //     scale.value = withTiming(1);
+      //   });
 
       const style = useAnimatedStyle(() => {
         return {
