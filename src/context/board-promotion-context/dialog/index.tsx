@@ -13,6 +13,7 @@ const PromotionDialog: React.FC<Required<BoardPromotionContextState>> =
   React.memo(({ type, onSelect }) => {
     const { boardSize } = useChessboardProps();
 
+    console.log('PromotionDialog called!!!');
     return (
       <Animated.View
         entering={FadeIn}

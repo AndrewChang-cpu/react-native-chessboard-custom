@@ -26,9 +26,9 @@ const Chessboard: React.FC = React.memo(() => {
 
   return (
     <View style={[styles.container, { width: boardSize }]}>
-      <Background />
       <Pieces />
       <HighlightedSquares />
+      <Background />
       {/* <SuggestedDots /> */}
     </View>
   );

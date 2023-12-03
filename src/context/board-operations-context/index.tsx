@@ -20,6 +20,7 @@ import { useChessboardProps } from '../props-context/hooks';
 type BoardOperationsContextType = {
   selectableSquares: Animated.SharedValue<Square[]>;
   onMove: (from: Square, to: Square) => void;
+  putPiece: (type: PieceType, dest: Square, color: "b" | "w") => void;
   onSelectPiece: (square: Square) => void;
   moveTo: (to: Square) => void;
   isPromoting: (from: Square, to: Square) => boolean;
@@ -229,9 +230,18 @@ const BoardOperationsContextProviderComponent = React.forwardRef<
     [controller, selectedSquare.value]
   );
 
+  const putPiece = useCallback(
+    (type: PieceType, dest: Square, color: "b" | "w") => {
+      controller?.put({type: type, dest: dest, color: color});
+      return true;
+    },
+    [controller]
+  );
+
   const value = useMemo(() => {
     return {
       onMove,
+      putPiece,
       onSelectPiece,
       moveTo,
       selectableSquares,
@@ -241,6 +251,7 @@ const BoardOperationsContextProviderComponent = React.forwardRef<
     };
   }, [
     isPromoting,
+    putPiece,
     moveTo,
     onMove,
     onSelectPiece,

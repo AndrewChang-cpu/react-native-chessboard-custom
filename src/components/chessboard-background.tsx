@@ -2,6 +2,12 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useChessboardProps } from '../context/props-context/hooks';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { useBoardPromotion } from '../context/board-promotion-context/hooks';
+import { useChessEngine } from '../context/chess-engine-context/hooks';
+import { useBoardOperations } from '../context/board-operations-context/hooks';
+import type { PieceType } from 'src/types';
+import type { Square } from 'chess.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +40,31 @@ const Square = React.memo(
     const color = white ? colors.white : colors.black;
     const textStyle = { fontWeight: '500' as const, fontSize: 10, color };
     const newLocal = col === 0;
+    const { showPromotionDialog } = useBoardPromotion();
+    const { putPiece } = useBoardOperations();
+    const chess = useChessEngine();
+
+
+    const onSelectSquare = () => {
+      console.log('fen', chess.fen())
+      console.log('square selected', row, col)
+      const squareNotation = `${String.fromCharCode(97 + col)}${8 - row}`;
+      showPromotionDialog({
+        type: 'w', // or based on the current turn
+        onSelect: (pieceType) => {
+          console.log("SQUARE PRESSED", pieceType, squareNotation)
+          putPiece(pieceType, squareNotation as Square, 'w')
+          // Logic to place the selected piece on 'squareNotation'
+          // Update the game state or board representation accordingly
+        },
+      });
+    };
+    
+    const tapGesture = Gesture.Tap().onEnd(onSelectSquare);
+
+
     return (
+      <GestureDetector gesture={tapGesture}>
       <View
         style={{
           flex: 1,
@@ -54,6 +84,7 @@ const Square = React.memo(
           </Text>
         )}
       </View>
+      </GestureDetector>
     );
   }
 );

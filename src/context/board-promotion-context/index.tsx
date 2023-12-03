@@ -31,12 +31,15 @@ const BoardPromotionContextProvider: React.FC = React.memo(({ children }) => {
   const showPromotionDialog: BoardPromotionContextType['showPromotionDialog'] =
     useCallback(({ type, onSelect }) => {
       setDialog({ isDialogActive: true, type, onSelect });
+      console.log('activated', dialog.isDialogActive);
+
     }, []);
 
   const onSelect = useCallback(
     (piece: PieceType) => {
       dialog.onSelect?.(piece);
       setDialog({ isDialogActive: false });
+      console.log('activated', dialog.isDialogActive);
     },
     [dialog]
   );

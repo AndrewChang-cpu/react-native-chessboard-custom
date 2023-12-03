@@ -179,7 +179,7 @@ const Piece = React.memo(
         }
         if (!gestureEnabled.value) return;
         scale.value = withTiming(1.2);
-        onStartTap(square);
+        // onStartTap(square);
       }, [
         gestureEnabled.value,
         globalMoveTo,
@@ -202,7 +202,7 @@ const Piece = React.memo(
         })
         .onStart(() => {
           if (!gestureEnabled.value) return;
-          isGestureActive.value = true;
+          // isGestureActive.value = true;
         })
         .onUpdate(({ translationX, translationY }) => {
           if (!gestureEnabled.value) return;
@@ -256,12 +256,12 @@ const Piece = React.memo(
 
       return (
         <>
-          <Animated.View style={underlay} />
-          <GestureDetector gesture={gesture}>
-            <Animated.View style={style}>
+          <Animated.View style={underlay} pointerEvents="none" />
+          {/* <GestureDetector gesture={gesture}> */}
+            <Animated.View style={style} pointerEvents="none">
               <ChessPiece id={id} />
             </Animated.View>
-          </GestureDetector>
+          {/* </GestureDetector> */}
         </>
       );
     }
