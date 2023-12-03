@@ -29,7 +29,7 @@ const Chessboard: React.FC = React.memo(() => {
       <Background />
       <Pieces />
       <HighlightedSquares />
-      <SuggestedDots />
+      {/* <SuggestedDots /> */}
     </View>
   );
 });

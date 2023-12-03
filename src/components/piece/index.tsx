@@ -40,10 +40,11 @@ const Piece = React.memo(
       const { onSelectPiece, onMove, selectedSquare, turn } =
         useBoardOperations();
 
-      const {
+      let {
         durations: { move: moveDuration },
-        gestureEnabled: gestureEnabledFromChessboardProps,
+        gestureEnabled: gestureEnabledFromChessboardProps ,
       } = useChessboardProps();
+      // gestureEnabledFromChessboardProps = false;
 
       const gestureEnabled = useDerivedValue(
         () => turn.value === id.charAt(0) && gestureEnabledFromChessboardProps,
@@ -205,8 +206,8 @@ const Piece = React.memo(
         })
         .onUpdate(({ translationX, translationY }) => {
           if (!gestureEnabled.value) return;
-          translateX.value = offsetX.value + translationX;
-          translateY.value = offsetY.value + translationY;
+          // translateX.value = offsetX.value + translationX;
+          // translateY.value = offsetY.value + translationY;
         })
         .onEnd(() => {
           if (!gestureEnabled.value) return;
