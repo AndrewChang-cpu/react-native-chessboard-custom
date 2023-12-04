@@ -17,8 +17,8 @@ const PromotionDialog: React.FC<Required<BoardPromotionContextState>> =
     console.log('PromotionDialog called!!!');
     return (
       <Animated.View
-        // entering={FadeIn}
-        // exiting={FadeOut}
+        entering={FadeIn}
+        exiting={FadeOut}
         style={[
           styles.container,
           {
