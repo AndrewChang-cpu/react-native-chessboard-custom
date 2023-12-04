@@ -231,7 +231,7 @@ const BoardOperationsContextProviderComponent = React.forwardRef<
   );
 
   const putPiece = useCallback(
-    (type: PieceType, dest: Square, color: "b" | "w") => {
+    (type: PieceType, dest: Square, color: "b" | "w" | "x") => {
       controller?.put({type: type, dest: dest, color: color});
       return true;
     },

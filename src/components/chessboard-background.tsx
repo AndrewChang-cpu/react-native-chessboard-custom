@@ -6,8 +6,8 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useBoardPromotion } from '../context/board-promotion-context/hooks';
 import { useChessEngine } from '../context/chess-engine-context/hooks';
 import { useBoardOperations } from '../context/board-operations-context/hooks';
-import type { PieceType } from 'src/types';
-import type { Square } from 'chess.js';
+// import type { PieceType } from 'src/types';
+import type { PieceType, Square } from 'chess.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,7 +33,7 @@ interface SquareProps extends RowProps {
   col: number;
 }
 
-const Square = React.memo(
+const RowSquare = React.memo(
   ({ white, row, col, letters, numbers }: SquareProps) => {
     const { colors } = useChessboardProps();
     const backgroundColor = white ? colors.black : colors.white;
@@ -51,10 +51,10 @@ const Square = React.memo(
       console.log('square selected', row, col)
       const squareNotation = `${String.fromCharCode(97 + col)}${8 - row}`;
       showPromotionDialog({
-        type: 'w', // or based on the current turn
-        onSelect: (pieceType) => {
+        type: 'w', // NOTE THAT THIS ISN'T USED
+        onSelect: (pieceType: PieceType, color: 'b' | 'w' | 'x') => {
           console.log("SQUARE PRESSED", pieceType, squareNotation)
-          putPiece(pieceType, squareNotation as Square, 'w')
+          putPiece(pieceType, squareNotation as Square, color)
           // Logic to place the selected piece on 'squareNotation'
           // Update the game state or board representation accordingly
         },
@@ -95,7 +95,7 @@ const Row = React.memo(({ white, row, ...rest }: RowProps) => {
   return (
     <View style={styles.container}>
       {new Array(8).fill(0).map((_, i) => (
-        <Square
+        <RowSquare
           {...rest}
           row={row}
           col={i}

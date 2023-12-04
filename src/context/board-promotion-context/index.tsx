@@ -6,7 +6,7 @@ import { View, Text, Button } from 'react-native';
 export type BoardPromotionContextType = {
   showPromotionDialog: (_: {
     type: PromotionDialogType;
-    onSelect?: (_: PieceType) => void;
+    onSelect?: (_: PieceType, x_: 'b' | 'w' | 'x') => void;
   }) => void;
   isPromoting: boolean;
 };
@@ -21,7 +21,7 @@ type PromotionDialogType = ReturnType<ChessInstance['turn']>;
 export type BoardPromotionContextState = {
   isDialogActive: boolean;
   type?: PromotionDialogType;
-  onSelect?: (_: PieceType) => void;
+  onSelect?: (_: PieceType, x_: "b" | "w" | "x") => void;
 };
 
 const BoardPromotionContextProvider: React.FC = React.memo(({ children }) => {
@@ -36,9 +36,9 @@ const BoardPromotionContextProvider: React.FC = React.memo(({ children }) => {
     }, []);
 
   const onSelect = useCallback(
-    (piece: PieceType) => {
+    (piece: PieceType, type: 'b' | 'w' | 'x') => {
       console.log('Piece received', piece)
-      dialog.onSelect?.(piece);
+      dialog.onSelect?.(piece, type);
       setDialog({ isDialogActive: false });
     },
     [dialog]
@@ -56,28 +56,11 @@ const BoardPromotionContextProvider: React.FC = React.memo(({ children }) => {
     console.log("USE EFFECT CALLED. IS DIALOG ACTIVE?", dialog.isDialogActive);
   }, [dialog.isDialogActive]);
 
-  const dummy = (active: boolean) => {
-    console.log("DUMMY CALLED. IS DIALOG ACTIVE?", active);
-    if (active)
-      return (
-        // <View style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', justifyContent: 'center', alignItems: 'center' }}>
-        //   <View style={{ width: 200, height: 100, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-        //     <Text>Simple Promotion Dialog</Text>
-        //     <Button title="Select Piece" onPress={() => onSelect('q')} />
-        //   </View>
-        // </View>
-        <PromotionDialog type="w" {...dialog} onSelect={onSelect} />
-      ); // <PromotionDialog type="w" {...dialog} onSelect={onSelect} />
-    else
-      return <></>;
-    // console.log("PROMOTION DIALOG RENDERED");
-    // return true;
-  };
-
   return (
+    // TYPE ISN'T USED
     <BoardPromotionContext.Provider value={value}>
       {console.log("PRERERENDERED. IS DIALOG ACTIVE?", dialog.isDialogActive)}
-      {dialog.isDialogActive && <PromotionDialog type="w" {...dialog} onSelect={onSelect} />}
+      {dialog.isDialogActive && <PromotionDialog type="w" {...dialog} onSelect={onSelect} />} 
       {console.log("RERENDERED. IS DIALOG ACTIVE?", dialog.isDialogActive)}
       {children}
     </BoardPromotionContext.Provider>

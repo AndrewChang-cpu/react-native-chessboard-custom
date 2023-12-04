@@ -1,10 +1,10 @@
 import type { Move, Square } from 'chess.js';
 import React, { useCallback, useImperativeHandle } from 'react';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+// import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
-  useDerivedValue,
+  // useDerivedValue,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';

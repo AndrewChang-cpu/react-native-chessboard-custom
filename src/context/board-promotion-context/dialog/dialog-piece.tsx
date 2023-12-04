@@ -1,6 +1,6 @@
 import type { PieceType } from 'chess.js';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
@@ -15,9 +15,9 @@ import { useChessboardProps } from '../../../context/props-context/hooks';
 type DialogPieceProps = {
   index: number;
   width: number;
-  type: Player;
+  type: Player | "x";
   piece: PieceType;
-  onSelectPiece?: (piece: PieceType) => void;
+  onSelectPiece?: (piece: PieceType, type: "b" | "w" | "x") => void;
 };
 
 const DialogPiece: React.FC<DialogPieceProps> = React.memo(
@@ -32,7 +32,7 @@ const DialogPiece: React.FC<DialogPieceProps> = React.memo(
         isTapActive.value = true;
       })
       .onTouchesUp(() => {
-        if (onSelectPiece) runOnJS(onSelectPiece)(piece);
+        if (onSelectPiece) runOnJS(onSelectPiece)(piece, type);
       })
       .onFinalize(() => {
         isTapActive.value = false;
@@ -56,10 +56,10 @@ const DialogPiece: React.FC<DialogPieceProps> = React.memo(
                 position: 'absolute',
                 backgroundColor: promotionPieceButton,
                 aspectRatio: 1,
-                borderTopLeftRadius: index === 0 ? 5 : 0,
-                borderBottomLeftRadius: index === 1 ? 5 : 0,
-                borderTopRightRadius: index === 2 ? 5 : 0,
-                borderBottomRightRadius: index === 3 ? 5 : 0,
+                // borderTopLeftRadius: index === 0 ? 5 : 0,
+                // borderBottomLeftRadius: index === 1 ? 5 : 0,
+                // borderTopRightRadius: index === 2 ? 5 : 0,
+                // borderBottomRightRadius: index === 3 ? 5 : 0,
               } as const,
               rStyle,
             ]}
@@ -68,13 +68,14 @@ const DialogPiece: React.FC<DialogPieceProps> = React.memo(
             style={[
               {
                 width,
-                borderLeftWidth: index === 3 || index === 2 ? 1 : 0,
-                borderTopWidth: index % 2 !== 0 ? 1 : 0,
+                // borderLeftWidth: index === 3 || index === 2 ? 1 : 0,
+                // borderTopWidth: index % 2 !== 0 ? 1 : 0,
               } as const,
               styles.pieceContainer,
             ]}
           >
-            <ChessPiece id={`${type}${piece}`} />
+            {type != "x" && <ChessPiece id={`${type}${piece}`} />}
+            {type == "x" && <Text selectionColor='red'>X</Text>}
           </View>
         </Animated.View>
       </GestureDetector>

@@ -31,7 +31,7 @@ export type ChessboardRef = {
     from: Square;
     to: Square;
   }) => Promise<Move | undefined> | undefined;
-  put: (type: PieceType, dest: Square, color: "b" | "w") => void;
+  put: (_:{type: PieceType, dest: Square, color: "b" | "w" | "x"}) => void;
   highlight: (_: { square: Square; color?: string }) => void;
   resetAllHighlightedSquares: () => void;
   resetBoard: (fen?: string) => void;
@@ -85,7 +85,10 @@ const BoardRefsContextProviderComponent = React.forwardRef<
         setBoard(chess.board());
       },
       put: ({type, dest, color}) => {
-        chess.put({ type, color }, dest);
+        if (color == 'x') chess.remove(dest);
+        else console.log("PUT", type, color, chess.put({ type, color }, dest));
+
+        console.log('VALID FEN?', chess.validate_fen(chess.fen()));
         setBoard(chess.board());
       },
       highlight: ({ square, color }) => {
