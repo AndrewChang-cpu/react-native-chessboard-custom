@@ -85,7 +85,56 @@ const BoardRefsContextProviderComponent = React.forwardRef<
         setBoard(chess.board());
       },
       put: ({type, dest, color}) => {
+        console.log("!!!!PUTTING", type, color, "ON", dest);
+
         if (color == 'x') chess.remove(dest);
+        else if (type == 'k') {
+          function placeKingOnFEN(fen: string, position: Square, color: "b" | "w") {
+            const ranks = fen.split(' ')[0].split('/');
+            const file = position.charCodeAt(0) - 'a'.charCodeAt(0); // Column, 'a' -> 0, 'b' -> 1, ...
+            const rankIndex = 8 - parseInt(position[1], 10); // Row, '1' -> 7, '2' -> 6, ...
+            const rank = ranks[rankIndex];
+        
+            let newRank = '';
+            let n = 0;
+            for (let i = 0; i < rank.length; i++)
+            {
+              if (rank[i] > '0' && rank[i] < '9')
+              {
+                let num = parseInt(rank[i], 10);
+                if (file < i + num)
+                {
+                  let before = (file - i != 0 ? (file - i).toString() : '')
+                  let after = (i + num - file - 1 != 0 ? (i + num - file - 1).toString() : '');
+                  newRank += before + (color == 'w' ? 'K' : 'k') + after;
+                }
+                else newRank += rank[i];
+                n += num;
+              }
+              else
+              {
+                if (n == file) newRank += color == 'w' ? 'K' : 'k';
+                else newRank += rank[i];
+                n++;
+              }
+              console.log(i, rank, newRank)
+            }
+            console.log("OLD RANK", rank, "NEW RANK:", newRank)
+        
+            ranks[rankIndex] = newRank;
+        
+            return ranks.join('/') + fen.slice(fen.indexOf(' '));
+          }
+          console.log('Replacing king');
+
+          const fen = chess.fen();
+          if (fen.split(' ')[0].includes((color == 'w' ? 'K' : 'k'))) return;
+
+          const newFen = placeKingOnFEN(fen, dest, color);
+          chess.load(newFen);
+          console.log("PUTTING KING. NEW FEN:", newFen);
+          // setBoard(chess.board());
+        }
         else console.log("PUT", type, color, chess.put({ type, color }, dest));
 
         console.log('VALID FEN?', chess.validate_fen(chess.fen()));

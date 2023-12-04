@@ -37,7 +37,7 @@ const BoardPromotionContextProvider: React.FC = React.memo(({ children }) => {
 
   const onSelect = useCallback(
     (piece: PieceType, type: 'b' | 'w' | 'x') => {
-      console.log('Piece received', piece)
+      console.log('Piece received', piece, type)
       dialog.onSelect?.(piece, type);
       setDialog({ isDialogActive: false });
     },
@@ -52,16 +52,10 @@ const BoardPromotionContextProvider: React.FC = React.memo(({ children }) => {
     [dialog.isDialogActive, showPromotionDialog]
   );
 
-  useEffect(() => {
-    console.log("USE EFFECT CALLED. IS DIALOG ACTIVE?", dialog.isDialogActive);
-  }, [dialog.isDialogActive]);
-
   return (
     // TYPE ISN'T USED
     <BoardPromotionContext.Provider value={value}>
-      {console.log("PRERERENDERED. IS DIALOG ACTIVE?", dialog.isDialogActive)}
       {dialog.isDialogActive && <PromotionDialog type="w" {...dialog} onSelect={onSelect} />} 
-      {console.log("RERENDERED. IS DIALOG ACTIVE?", dialog.isDialogActive)}
       {children}
     </BoardPromotionContext.Provider>
   );

@@ -47,8 +47,6 @@ const RowSquare = React.memo(
 
     const onSelectSquare = () => {
       console.log('fen', chess.fen())
-      console.log('turn', chess.turn())
-      console.log('square selected', row, col)
       const squareNotation = `${String.fromCharCode(97 + col)}${8 - row}`;
       showPromotionDialog({
         type: 'w', // NOTE THAT THIS ISN'T USED
