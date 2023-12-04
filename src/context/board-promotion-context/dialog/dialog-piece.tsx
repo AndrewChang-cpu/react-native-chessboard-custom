@@ -22,6 +22,7 @@ type DialogPieceProps = {
 
 const DialogPiece: React.FC<DialogPieceProps> = React.memo(
   ({ index, width, type, piece, onSelectPiece }) => {
+    if (index) {};
     const isTapActive = useSharedValue(false);
     const {
       colors: { promotionPieceButton },

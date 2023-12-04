@@ -20,7 +20,7 @@ import { useChessboardProps } from '../props-context/hooks';
 type BoardOperationsContextType = {
   selectableSquares: Animated.SharedValue<Square[]>;
   onMove: (from: Square, to: Square) => void;
-  putPiece: (type: PieceType, dest: Square, color: "b" | "w") => void;
+  putPiece: (type: PieceType, dest: Square, color: "b" | "w" | "x") => void;
   onSelectPiece: (square: Square) => void;
   moveTo: (to: Square) => void;
   isPromoting: (from: Square, to: Square) => boolean;

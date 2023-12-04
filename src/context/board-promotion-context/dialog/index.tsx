@@ -11,6 +11,7 @@ const PROMOTION_PIECES: PieceType[] = ['k', 'q', 'r', 'n', 'b', 'p'];
 
 const PromotionDialog: React.FC<Required<BoardPromotionContextState>> =
   React.memo(({ type, onSelect }) => {
+    if (type) {};
     const { boardSize } = useChessboardProps();
 
     console.log('PromotionDialog called!!!');
