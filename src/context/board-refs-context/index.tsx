@@ -102,10 +102,10 @@ const BoardRefsContextProviderComponent = React.forwardRef<
               if (rank[i] > '0' && rank[i] < '9')
               {
                 let num = parseInt(rank[i], 10);
-                if (file < i + num && file >= i)
+                if (file < n + num && file >= n)
                 {
-                  let before = (file - i != 0 ? (file - i).toString() : '')
-                  let after = (i + num - file - 1 != 0 ? (i + num - file - 1).toString() : '');
+                  let before = (file - n != 0 ? (file - n).toString() : '')
+                  let after = (n + num - file - 1 != 0 ? (n + num - file - 1).toString() : '');
                   newRank += before + (color == 'w' ? 'K' : 'k') + after;
                 }
                 else newRank += rank[i];
